@@ -1,0 +1,452 @@
+﻿import QtQuick 2.15
+import QtQuick.Controls 2.4
+import QtQuick.Layouts 1.15
+import QtMultimedia
+import QtQuick.Dialogs
+
+ApplicationWindow {
+    id: root
+    visible: true
+    width: 1024
+    height: 600
+    visibility: "Windowed"
+    title: qsTr("Media Player")
+    Component.onCompleted: {
+        // Clear demo items to start with an empty playlist
+        try { trackModel.clear() } catch(e) {}
+        currentIndex = -1
+    }
+
+    property int currentIndex: -1
+    property real progress: player.duration > 0 ? player.position / player.duration : 0
+
+    function formatTime(ms) {
+        var s = Math.max(0, Math.floor((ms||0) / 1000));
+        var m = Math.floor(s / 60);
+        var r = (s % 60).toString().padStart(2, '0');
+        return m + ":" + r;
+    }
+
+    function selectTrack(index, autoplay) {
+        if (index < 0 || index >= trackModel.count) return;
+        currentIndex = index;
+        player.source = trackModel.get(currentIndex).url;
+        player.position = 0;
+        if (autoplay === undefined || autoplay) player.play();
+    }
+
+    function nextTrack() {
+        if (shuffleBtn.status === 1) {
+            // pick a random index different from current
+            var idx = currentIndex;
+            if (trackModel.count > 1) {
+                var guard = 0;
+                while (idx === currentIndex && guard < 20) {
+                    idx = Math.floor(Math.random() * trackModel.count);
+                    guard++;
+                }
+            } else if (trackModel.count === 1) {
+                idx = 0;
+            }
+            if (idx !== -1) selectTrack(idx);
+        } else {
+            if (trackModel.count > 0)
+                selectTrack((currentIndex + 1) % trackModel.count);
+        }
+    }
+
+    function prevTrack() {
+        if (shuffleBtn.status === 1) {
+            var idx = currentIndex;
+            if (trackModel.count > 1) {
+                var guard = 0;
+                while (idx === currentIndex && guard < 20) {
+                    idx = Math.floor(Math.random() * trackModel.count);
+                    guard++;
+                }
+            } else if (trackModel.count === 1) {
+                idx = 0;
+            }
+            if (idx !== -1) selectTrack(idx);
+        } else {
+            if (trackModel.count > 0)
+                selectTrack((currentIndex - 1 + trackModel.count) % trackModel.count);
+        }
+    }
+
+    function addFiles(urlList) {
+        if (!urlList || urlList.length === 0) return;
+        var exts = [".mp3", ".wav", ".flac", ".ogg", ".m4a", ".aac"];
+        for (var i = 0; i < urlList.length; ++i) {
+            var u = urlList[i].toString();
+            var lower = u.toLowerCase();
+            var ok = false;
+            for (var k=0;k<exts.length;++k) if (lower.endsWith(exts[k])) { ok = true; break; }
+            if (!ok) continue;
+            var fname = decodeURIComponent(u.split('/').pop());
+            var title = fname.replace(/\.[^/.]+$/, "");
+            trackModel.append({ title: title, artist: "", cover: "qrc:/Image/music.png", url: u });
+        }
+        if (currentIndex === -1 && trackModel.count > 0) selectTrack(0, false);
+    }
+
+    function clearPlaylist() {
+        trackModel.clear();
+        currentIndex = -1;
+        player.stop();
+        player.source = "";
+    }
+
+    function removeTrack(idx) {
+        if (idx < 0 || idx >= trackModel.count) return;
+        var wasCurrent = (idx === currentIndex);
+        trackModel.remove(idx);
+        if (trackModel.count === 0) {
+            currentIndex = -1;
+            player.stop();
+            player.source = "";
+            return;
+        }
+        if (wasCurrent) {
+            var ni = Math.min(idx, trackModel.count - 1);
+            selectTrack(ni, true);
+        } else if (idx < currentIndex) {
+            currentIndex = currentIndex - 1;
+        }
+    }
+
+    ListModel {
+        id: trackModel
+        ListElement { title: "Hongkong1"; artist: "Music"; cover: "qrc:/Image/Hongkong1.png"; duration: 210 }
+        ListElement { title: "BÃ¹i Anh Tuáº¥n"; artist: "BÃ¹i Anh Tuáº¥n"; cover: "qrc:/Image/Bui-Anh-Tuan.png"; duration: 240 }
+        ListElement { title: "HÃ  Anh Tuáº¥n"; artist: "HÃ  Anh Tuáº¥n"; cover: "qrc:/Image/Ha-Anh-Tuan.png"; duration: 230 }
+    }
+
+    AudioOutput { id: audioOut }
+    MediaPlayer {
+        id: player
+        audioOutput: audioOut
+        loops: repeatBtn.status === 1 ? MediaPlayer.Infinite : 1
+        onMediaStatusChanged: {
+            if (mediaStatus === MediaPlayer.EndOfMedia && repeatBtn.status !== 1) {
+                nextTrack();
+            }
+        }
+    }
+    FileDialog {
+        id: openDialog
+        title: qsTr("Chá»n bÃ i hÃ¡t")
+        fileMode: FileDialog.OpenFiles
+        nameFilters: ["Audio files (*.mp3 *.wav *.flac *.ogg *.m4a *.aac)", "All files (*)"]
+        onAccepted: addFiles(selectedFiles)
+    }
+
+    // Top toolbar
+    header: ToolBar {
+        contentItem: RowLayout {
+            spacing: 6
+            anchors.fill: parent
+
+            // Icon: Add files
+            ToolButton {
+                width: 36; height: 36
+                hoverEnabled: true
+                onClicked: openDialog.open()
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("ThÃªm bÃ i...")
+                contentItem: Image { anchors.centerIn: parent; source: "qrc:/Image/USB Mussic.png"; fillMode: Image.PreserveAspectFit; width: 28; height: 28 }
+            }
+
+            // Icon: Clear playlist
+            ToolButton {
+                width: 36; height: 36
+                hoverEnabled: true
+                onClicked: clearPlaylist()
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("XÃ³a háº¿t playlist")
+                contentItem: Image { anchors.centerIn: parent; source: "qrc:/Image/playlist_item.png"; fillMode: Image.PreserveAspectFit; width: 28; height: 28 }
+            }
+
+            // Icon: Fullscreen toggle
+            ToolButton {
+                width: 36; height: 36
+                hoverEnabled: true
+                onClicked: {
+                    if (root.visibility === "FullScreen") root.visibility = "Windowed"; else root.visibility = "FullScreen"
+                }
+                ToolTip.visible: hovered
+                ToolTip.text: root.visibility === "FullScreen" ? qsTr("Chuyá»ƒn vá» cá»­a sá»•") : qsTr("ToÃ n mÃ n hÃ¬nh")
+                contentItem: Image { anchors.centerIn: parent; source: "qrc:/Image/title.png"; fillMode: Image.PreserveAspectFit; width: 24; height: 24 }
+            }
+
+            Item { Layout.fillWidth: true }
+            Label { text: qsTr("Media Player"); color: "white" }
+
+            // Icon: Exit
+            ToolButton {
+                width: 36; height: 36
+                hoverEnabled: true
+                onClicked: Qt.quit()
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("ThoÃ¡t")
+                contentItem: Image { anchors.centerIn: parent; source: "qrc:/Image/hold.png"; fillMode: Image.PreserveAspectFit; width: 24; height: 24 }
+            }
+        }
+    }
+
+    // Background
+    Image {
+        anchors.fill: parent
+        source: "qrc:/Image/background.png"
+        fillMode: Image.PreserveAspectCrop
+    }
+
+    // Main layout
+    RowLayout {
+        anchors.fill: parent
+        anchors.margins: 24
+
+        // Playlist panel
+        Column {
+            Layout.fillHeight: true
+            Layout.preferredWidth: 380
+            spacing: 16
+
+            Image { source: "qrc:/Image/playlist.png" }
+
+            Repeater {
+                model: trackModel
+                delegate: Item {
+                    width: 360
+                    height: 88
+
+                    Image { // item background
+                        anchors.fill: parent
+                        source: "qrc:/Image/playlist_item.png"
+                        fillMode: Image.Stretch
+                    }
+
+                    Image { // cover
+                        id: coverImg
+                        source: cover
+                        width: 72; height: 72
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left; anchors.leftMargin: 12
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    Column {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: coverImg.right; anchors.leftMargin: 12
+                        spacing: 4
+                        Text {
+                            text: title
+                            color: "white"
+                            font.pixelSize: 18
+                            elide: Text.ElideRight
+                            width: 200
+                        }
+                        Text {
+                            text: artist
+                            color: "#cccccc"
+                            font.pixelSize: 14
+                            elide: Text.ElideRight
+                            width: 200
+                        }
+                    }
+
+                    Image { // playing indicator
+                        source: "qrc:/Image/playing.png"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right; anchors.rightMargin: 44
+                        visible: index === currentIndex && player.playbackState === MediaPlayer.PlayingState
+                    }
+
+                    // Remove button
+                    Rectangle {
+                        id: removeBtn
+                        width: 24; height: 24; radius: 12
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right; anchors.rightMargin: 12
+                        color: "#cc4444"
+                        Text { anchors.centerIn: parent; text: "Ã—"; color: "white"; font.pixelSize: 16 }
+                        MouseArea { anchors.fill: parent; onClicked: removeTrack(index) }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: selectTrack(index, true)
+                        onDoubleClicked: selectTrack(index, true)
+                    }
+                }
+            }
+        }
+
+        // Right content area
+        ColumnLayout {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            spacing: 16
+
+            // Header (moved to window toolbar)
+
+            // Media info
+            ColumnLayout {
+                Layout.fillWidth: true
+                spacing: 4
+                Text {
+                    Layout.fillWidth: true
+                    text: trackModel.count > 0 ? trackModel.get(currentIndex).title : ""
+                    color: "white"
+                    font.pixelSize: 28
+                    elide: Text.ElideRight
+                }
+                Text {
+                    Layout.fillWidth: true
+                    text: trackModel.count > 0 ? trackModel.get(currentIndex).artist : ""
+                    color: "#cccccc"
+                    font.pixelSize: 18
+                    elide: Text.ElideRight
+                }
+            }
+
+            // Album art
+            Item {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Image {
+                    anchors.centerIn: parent
+                    source: trackModel.count > 0 ? trackModel.get(currentIndex).cover : ''
+                    width: Math.min(parent.width * 0.6, parent.height * 0.7)
+                    height: width
+                    fillMode: Image.PreserveAspectFit
+                }
+            }
+
+            // Progress bar
+            ColumnLayout {
+                Layout.fillWidth: true
+                spacing: 6
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 8
+                    Text { text: formatTime(player.position); color: "#cccccc"; font.pixelSize: 14 }
+                    Item { Layout.fillWidth: true }
+                    Text { text: formatTime(player.duration); color: "#cccccc"; font.pixelSize: 14 }
+                }
+
+                Item {
+                    id: progressBar
+                    Layout.fillWidth: true
+                    height: 24
+
+                    Image {
+                        id: barBg
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        source: "qrc:/Image/progress_bar_bg.png"
+                        fillMode: Image.Stretch
+                        height: 8
+                    }
+
+                    // Click on the bar to seek
+                    MouseArea {
+                        anchors.fill: barBg
+                        onClicked: {
+                            var p = mouse.x / barBg.width;
+                            p = Math.max(0, Math.min(1, p));
+                            if (player.duration > 0) player.position = Math.round(p * player.duration);
+                        }
+                    }
+
+                    Image {
+                        id: barFg
+                        anchors.verticalCenter: barBg.verticalCenter
+                        anchors.left: barBg.left
+                        source: "qrc:/Image/progress_bar.png"
+                        height: barBg.height
+                        width: Math.max(0, Math.min(barBg.width, progress * barBg.width))
+                        fillMode: Image.Stretch
+                    }
+
+                    Image {
+                        id: knob
+                        source: "qrc:/Image/point.png"
+                        anchors.verticalCenter: barBg.verticalCenter
+                        x: Math.max(0, Math.min(barBg.width, progress * barBg.width)) - width / 2
+                        z: 2
+                        MouseArea {
+                            anchors.fill: parent
+                            drag.target: parent
+                            drag.axis: Drag.XAxis
+                            drag.minimumX: -parent.width/2
+                            drag.maximumX: barBg.width - parent.width/2
+                            onPositionChanged: {
+                                var px = Math.max(0, Math.min(barBg.width, parent.x + parent.width/2));
+                                var p = barBg.width > 0 ? px / barBg.width : 0;
+                                if (player.duration > 0) player.position = Math.round(p * player.duration);
+                            }
+                            onClicked: { // jump to position by click
+                                var p = (mouse.x + parent.x) / barBg.width;
+                                p = Math.max(0, Math.min(1, p));
+                                if (player.duration > 0) player.position = Math.round(p * player.duration);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Media controls
+            RowLayout {
+                Layout.alignment: Qt.AlignHCenter
+                spacing: 24
+
+                // Prev
+                ButtonControl {
+                    icon_default: "qrc:/Image/prev.png"
+                    icon_pressed: "qrc:/Image/hold-prev.png"
+                    icon_released: icon_default
+                    onClicked: prevTrack()
+                }
+
+                // Play/Pause
+                ButtonControl {
+                    id: playBtn
+                    icon_default: (player.playbackState === MediaPlayer.PlayingState) ? "qrc:/Image/pause.png" : "qrc:/Image/play.png"
+                    icon_pressed: (player.playbackState === MediaPlayer.PlayingState) ? "qrc:/Image/hold-pause.png" : "qrc:/Image/hold-play.png"
+                    icon_released: icon_default
+                    onClicked: {
+                        if (player.playbackState === MediaPlayer.PlayingState) player.pause(); else player.play();
+                    }
+                }
+
+                // Next
+                ButtonControl {
+                    icon_default: "qrc:/Image/next.png"
+                    icon_pressed: "qrc:/Image/hold-next.png"
+                    icon_released: icon_default
+                    onClicked: nextTrack()
+                }
+
+                // Spacer
+                Item { width: 32; height: 1 }
+
+                // Shuffle
+                SwitchButton {
+                    id: shuffleBtn
+                    icon_off: "qrc:/Image/shuffle.png"
+                    icon_on: "qrc:/Image/shuffle-1.png"
+                }
+
+                // Repeat
+                SwitchButton {
+                    id: repeatBtn
+                    icon_off: "qrc:/Image/repeat.png"
+                    icon_on: "qrc:/Image/repeat1_hold.png"
+                }
+            }
+        }
+    }
+}

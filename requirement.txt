@@ -1,0 +1,566 @@
+﻿MÃ´
+ 
+táº£
+ 
+á»©ng
+ 
+dá»¥ng
+á»¨ng
+ 
+dá»¥ng
+ 
+cáº§n
+ 
+pháº£i
+ 
+Ä‘áº£m
+ 
+báº£o
+ 
+cÃ¡c
+ 
+chá»©c
+ 
+nÄƒng
+ 
+cÆ¡
+ 
+báº£n
+. 
+Tuy
+ 
+nhiÃªn
+, 
+báº¡n
+ 
+cÃ³
+ 
+thá»ƒ
+ 
+thÃªm
+ 
+chá»©c
+ 
+nÄƒng
+ 
+bá»•
+ sung 
+vÃ o
+ 
+á»©ng
+ 
+dá»¥ng
+ 
+cá»§a
+ 
+báº¡n
+, 
+náº¿u
+ 
+báº¡n
+ 
+muá»‘n
+.
+Chá»©c
+ 
+nÄƒng
+ 
+vÃ 
+ 
+yÃªu
+ 
+cáº§u
+ 
+cÆ¡
+ 
+báº£n
+1. 
+Thiáº¿t
+ 
+káº¿
+ 
+giao
+ 
+diá»‡n
+a. Â  Â  
+Thiáº¿t
+ 
+káº¿
+ 
+giá»‘ng
+ 
+hoáº·c
+ 
+tÆ°Æ¡ng
+ 
+tá»±
+ 
+nhÆ°
+ 
+trong
+ 
+hÃ¬nh
+ 
+áº£nh
+ 
+tham
+ 
+kháº£o
+ á»Ÿ 
+dÆ°á»›i
+b. Â  Â  
+KhÃ´ng
+ 
+háº¡n
+ 
+cháº¿
+ 
+cÃ¡c
+ 
+thÃ nh
+ 
+pháº§n
+ 
+Qt
+ Quick 
+khi
+ 
+thiáº¿t
+ 
+káº¿
+ 
+giao
+ 
+diá»‡n
+c. Â  Â  
+YÃªu
+ 
+cáº§u
+ 
+há»c
+ 
+viÃªn
+ 
+tá»±
+ code QML, 
+khÃ´ng
+ 
+sá»­
+ 
+dá»¥ng
+ 
+cháº¿
+ 
+Ä‘á»™
+ 
+kÃ©o
+ 
+tháº£
+2. 
+YÃªu
+ 
+cáº§u
+ 
+cÆ¡
+ 
+báº£n
+a
+.
+Â Â Â Â Â 
+á»¨ng
+ 
+dá»¥ng
+ build 
+thÃ nh
+ 
+cÃ´ng
+ 
+vÃ 
+ 
+cÃ³
+ 
+thá»ƒ
+ 
+khá»Ÿi
+ 
+Ä‘á»™ng
+ 
+Ä‘Æ°á»£c
+b.
+Â Â Â Â Â 
+Xá»­
+ 
+lÃ½
+ 
+sá»±
+ 
+kiá»‡n
+-
+Â Â Â Â Â Â Â 
+Khi
+ user click 
+vÃ o
+ button shuffleÂ 
+Â 
+hoáº·c
+ 
+lÃ 
+ repeatÂ 
+Â 
+thÃ¬
+ 
+hÃ¬nh
+ 
+áº£nh
+ 
+cá»§a
+ button 
+sáº½
+ 
+thay
+ 
+Ä‘á»•i
+ 
+thÃ nh
+ 
+mÃ u
+ 
+ngÆ°á»£c
+ 
+láº¡i
+ (
+,
+)
+Tá»•
+ 
+chá»©c
+ code
+DÆ°á»›i
+ 
+Ä‘Ã¢y
+ 
+lÃ 
+ 
+gá»£i
+ Ã½ 
+tham
+ 
+kháº£o
+ 
+vá»
+ 
+cÃ¡ch
+ 
+thá»©c
+ 
+tá»•
+ 
+chá»©c
+ code 
+cho
+ 
+á»©ng
+ 
+dá»¥ng
+. 
+Báº¡n
+ 
+hoÃ n
+ 
+toÃ n
+ 
+cÃ³
+ 
+thá»ƒ
+ 
+tá»•
+ 
+chá»©c
+ code 
+theo
+ 
+cÃ¡ch
+ 
+riÃªng
+ 
+cá»§a
+ 
+mÃ¬nh
+.
+Tá»•
+ 
+chá»©c
+ code 
+nÃ y
+ 
+dá»±a
+ 
+trÃªn
+ template 
+cá»§a
+ 
+Qt
+ 
+bao
+ 
+gá»“m
+ 
+cÃ¡c
+ 
+thÃ nh
+ 
+pháº§n
+ 
+sau
+:
+1.
+ 
+Project file .pro 
+Ä‘Æ°á»£c
+ 
+Ä‘áº·t
+ á»Ÿ 
+thÆ°
+ 
+má»¥c
+ root
+2.
+ 
+ThÆ°
+ 
+má»¥c
+ image 
+nÆ¡i
+ 
+báº¡n
+ 
+cÃ³
+ 
+thá»ƒ
+ 
+tÃ¬m
+ 
+tháº¥y
+ 
+táº¥t
+ 
+cáº£
+ 
+cÃ¡c
+ resource 
+vá»
+ 
+áº£nh
+ 
+cá»§a
+ 
+dá»±
+ 
+Ã¡n
+ 
+táº¡i
+ 
+Ä‘Ã¢y
+3.
+ 
+CÃ¡c
+ file source 
+hiá»‡n
+ 
+táº¡i
+ 
+Ä‘Æ°á»£c
+ 
+Ä‘á»ƒ
+ 
+thÆ°
+ 
+má»¥c
+ root 
+cá»§a
+ 
+á»©ng
+ 
+dá»¥ng
+ (
+Báº¡n
+ 
+cÃ³
+ 
+thá»ƒ
+ 
+há»‡
+ 
+thá»‘ng
+ 
+láº¡i
+ 
+báº±ng
+ 
+cÃ¡c
+ 
+thÆ°
+ 
+má»¥c
+ 
+dÃ nh
+ 
+riÃªng
+ 
+cho
+ 
+qml
+, 
+c++
+)
+Chá»©c
+ 
+nÄƒng
+ 
+bá»•
+ sung
+NgoÃ i
+ 
+cÃ¡c
+ 
+yÃªu
+ 
+cáº§u
+ 
+cÆ¡
+ 
+báº£n
+ 
+trÃªn
+ 
+cÃ¡c
+ 
+báº¡n
+ 
+cÃ³
+ 
+thá»ƒ
+ 
+lÃ m
+ 
+bá»•
+ sung 
+thÃªm
+ 
+cÃ¡c
+ 
+tÃ­nh
+ 
+nÄƒng
+ 
+sau
+:
+-
+Â Â Â Â Â Â Â 
+Táº¡o
+ 
+hiá»‡u
+ 
+á»©ng
+ 
+khi
+ press 
+vÃ o
+ button 
+prev
+Â 
+, playÂ 
+, nextÂ 
+Â 
+Ä‘á»•i
+ 
+thÃ nh
+ 
+cÃ¡ch
+ 
+hÃ¬nh
+ 
+áº£nh
+ 
+tÆ°Æ¡ng
+ 
+á»©ng
+ 
+nhÆ°
+ 
+sau
+Â 
+Â 
+Â 
+, 
+khi
+ release 
+thÃ¬
+ 
+trá»Ÿ
+ 
+láº¡i
+ 
+nhÆ°
+ 
+bÃ¬nh
+ 
+thÆ°á»ng
+.
+Â 
+- Â Â 
+Thá»±c
+ 
+hiá»‡n
+ common 
+hoÃ¡
+ 
+má»™t
+ 
+sá»‘
+ 
+Ä‘á»‘i
+ 
+tÆ°á»£ng
+ 
+dÃ¹ng
+ 
+láº¡i
+ 
+nhiá»u
+ 
+láº§n
+ 
+nhÆ°
+ button shuffle 
+vÃ 
+ repeat, button 
+prev
+, play, next 
+( 
+Táº¡o
+ 
+má»™t
+ file 
+qml
+ 
+Ä‘á»‹nh
+ 
+nghÄ©a
+ 
+giao
+ 
+diá»‡n
+ 
+sá»­
+ 
+dá»¥ng
+ 
+chung
+ 
+cho
+ button shuffle 
+vÃ 
+ repeat)
+Â 
+
