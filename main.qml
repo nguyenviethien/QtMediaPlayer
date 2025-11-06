@@ -299,7 +299,7 @@ ApplicationWindow {
                         anchors.centerIn: parent
                         source: trackModel.count > 0 && currentIndex >= 0 ? trackModel.get(currentIndex).cover : "qrc:/Image/music.png"
                         fillMode: Image.PreserveAspectFit
-                        width: parent.width * 0.42
+                        width: parent.width * 0.32
                         height: width
                     }
                 }
@@ -348,19 +348,19 @@ ApplicationWindow {
                 spacing: 24
 
                 SwitchButton { id: shuffleBtn; icon_off: "qrc:/Image/shuffle.png"; icon_on: "qrc:/Image/shuffle-1.png"; iconSize: 20 }
-                ButtonControl { icon_default: "qrc:/Image/prev.png"; icon_pressed: "qrc:/Image/hold-prev.png"; icon_released: icon_default; iconSize: 22; onClicked: prevTrack() }
+                ButtonControl { icon_default: "qrc:/Image/prev.png"; icon_pressed: "qrc:/Image/hold-prev.png"; icon_released: icon_default; iconSize: 26; onClicked: prevTrack() }
                 Rectangle {
                     width: 56; height: 56; radius: 28; color: "#ff5bb1"; opacity: 0.9
                     ButtonControl {
                         anchors.centerIn: parent
                         icon_default: (player.playbackState === MediaPlayer.PlayingState) ? "qrc:/Image/pause.png" : "qrc:/Image/play.png"
                         icon_pressed: (player.playbackState === MediaPlayer.PlayingState) ? "qrc:/Image/hold-pause.png" : "qrc:/Image/hold-play.png"
-                        iconSize: 24
+                        iconSize: 28
                         icon_released: icon_default
                         onClicked: { if (player.playbackState === MediaPlayer.PlayingState) player.pause(); else player.play(); }
                     }
                 }
-                ButtonControl { icon_default: "qrc:/Image/next.png"; icon_pressed: "qrc:/Image/hold-next.png"; icon_released: icon_default; iconSize: 22; onClicked: nextTrack() }
+                ButtonControl { icon_default: "qrc:/Image/next.png"; icon_pressed: "qrc:/Image/hold-next.png"; icon_released: icon_default; iconSize: 26; onClicked: nextTrack() }
                 SwitchButton { id: repeatBtn; icon_off: "qrc:/Image/repeat.png"; icon_on: "qrc:/Image/repeat1_hold.png"; iconSize: 20 }
             }
 
