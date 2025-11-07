@@ -44,6 +44,30 @@ ApplicationWindow {
             } else if (trackModel.count === 1) {
                 idx = 0;
             }
+
+            // Volume (limited width to controls)
+            RowLayout {
+                id: volumeRow
+                Layout.alignment: Qt.AlignHCenter
+                implicitWidth: controlsRow.implicitWidth
+                spacing: 8
+                Label { text: qsTr("Vol"); color: "#cccccc" }
+                Slider {
+                    Layout.fillWidth: true
+                    from: 0; to: 1; value: audioOut.volume
+                    onMoved: audioOut.volume = value
+                    background: Rectangle { radius: 4; color: "#4a3968"; implicitHeight: 8 }
+                    handle: Rectangle { width: 12; height: 12; radius: 6; color: "#a888ff" }
+                    contentItem: Item {
+                        Rectangle {
+                            anchors.verticalCenter: parent.verticalCenter
+                            height: 8; radius: 4
+                            width: parent.width * audioOut.volume
+                            color: "#a888ff"
+                        }
+                    }
+                }
+            }
             if (idx !== -1) selectTrack(idx);
         } else {
             if (trackModel.count > 0)
@@ -344,11 +368,12 @@ ApplicationWindow {
 
 // Controls
             RowLayout {
+                id: controlsRow
                 Layout.alignment: Qt.AlignHCenter
                 spacing: 24
 
-                SwitchButton { id: shuffleBtn; icon_off: "qrc:/Image/shuffle.png"; icon_on: "qrc:/Image/shuffle-1.png"; iconSize: 24 }
-                ButtonControl { icon_default: "qrc:/Image/prev.png"; icon_pressed: "qrc:/Image/hold-prev.png"; icon_released: icon_default; iconSize: 28; onClicked: prevTrack() }
+                SwitchButton { id: shuffleBtn; icon_off: "qrc:/Image/shuffle.png"; icon_on: "qrc:/Image/shuffle-1.png"; iconSize: 32 }
+                ButtonControl { icon_default: "qrc:/Image/prev.png"; icon_pressed: "qrc:/Image/hold-prev.png"; icon_released: icon_default; iconSize: 32; onClicked: prevTrack() }
                 Rectangle {
                     width: 64; height: 64; radius: 32; color: "#ff5bb1"; opacity: 0.9
                     ButtonControl {
@@ -360,12 +385,12 @@ ApplicationWindow {
                         onClicked: { if (player.playbackState === MediaPlayer.PlayingState) player.pause(); else player.play(); }
                     }
                 }
-                ButtonControl { icon_default: "qrc:/Image/next.png"; icon_pressed: "qrc:/Image/hold-next.png"; icon_released: icon_default; iconSize: 28; onClicked: nextTrack() }
-                SwitchButton { id: repeatBtn; icon_off: "qrc:/Image/repeat.png"; icon_on: "qrc:/Image/repeat1_hold.png"; iconSize: 24 }
+                ButtonControl { icon_default: "qrc:/Image/next.png"; icon_pressed: "qrc:/Image/hold-next.png"; icon_released: icon_default; iconSize: 32; onClicked: nextTrack() }
+                SwitchButton { id: repeatBtn; icon_off: "qrc:/Image/repeat.png"; icon_on: "qrc:/Image/repeat1_hold.png"; iconSize: 32 }
             }
 
             // Volume
-            RowLayout {
+            RowLayout { visible: false
                 Layout.fillWidth: true
                 spacing: 8
                 Label { text: "🔊"; color: "#cccccc" }
