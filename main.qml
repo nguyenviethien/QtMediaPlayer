@@ -44,30 +44,6 @@ ApplicationWindow {
             } else if (trackModel.count === 1) {
                 idx = 0;
             }
-
-            // Volume (limited width to controls)
-            RowLayout {
-                id: volumeRow
-                Layout.alignment: Qt.AlignHCenter
-                implicitWidth: controlsRow.implicitWidth
-                spacing: 8
-                Label { text: qsTr("Vol"); color: "#cccccc" }
-                Slider {
-                    Layout.fillWidth: true
-                    from: 0; to: 1; value: audioOut.volume
-                    onMoved: audioOut.volume = value
-                    background: Rectangle { radius: 4; color: "#4a3968"; implicitHeight: 8 }
-                    handle: Rectangle { width: 12; height: 12; radius: 6; color: "#a888ff" }
-                    contentItem: Item {
-                        Rectangle {
-                            anchors.verticalCenter: parent.verticalCenter
-                            height: 8; radius: 4
-                            width: parent.width * audioOut.volume
-                            color: "#a888ff"
-                        }
-                    }
-                }
-            }
             if (idx !== -1) selectTrack(idx);
         } else {
             if (trackModel.count > 0)
@@ -387,6 +363,30 @@ ApplicationWindow {
                 }
                 ButtonControl { icon_default: "qrc:/Image/next.png"; icon_pressed: "qrc:/Image/hold-next.png"; icon_released: icon_default; iconSize: 32; onClicked: nextTrack() }
                 SwitchButton { id: repeatBtn; icon_off: "qrc:/Image/repeat.png"; icon_on: "qrc:/Image/repeat1_hold.png"; iconSize: 32 }
+            }
+
+            // Volume (short, centered under controls)
+            RowLayout {
+                id: volumeRow
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: controlsRow.implicitWidth
+                spacing: 8
+                Label { text: qsTr("Vol"); color: "#cccccc" }
+                Slider {
+                    Layout.fillWidth: true
+                    from: 0; to: 1; value: audioOut.volume
+                    onMoved: audioOut.volume = value
+                    background: Rectangle { radius: 4; color: "#4a3968"; implicitHeight: 8 }
+                    handle: Rectangle { width: 12; height: 12; radius: 6; color: "#a888ff" }
+                    contentItem: Item {
+                        Rectangle {
+                            anchors.verticalCenter: parent.verticalCenter
+                            height: 8; radius: 4
+                            width: parent.width * audioOut.volume
+                            color: "#a888ff"
+                        }
+                    }
+                }
             }
 
             // Volume
