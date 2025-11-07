@@ -347,27 +347,25 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
                 spacing: 24
 
-                SwitchButton { id: shuffleBtn; icon_off: "qrc:/Image/shuffle.png"; icon_on: "qrc:/Image/shuffle-1.png"; iconSize: 20 }
-                ButtonControl { icon_default: "qrc:/Image/prev.png"; icon_pressed: "qrc:/Image/hold-prev.png"; icon_released: icon_default; iconSize: 26; onClicked: prevTrack() }
+                SwitchButton { id: shuffleBtn; icon_off: "qrc:/Image/shuffle.png"; icon_on: "qrc:/Image/shuffle-1.png"; iconSize: 24 }
+                ButtonControl { icon_default: "qrc:/Image/prev.png"; icon_pressed: "qrc:/Image/hold-prev.png"; icon_released: icon_default; iconSize: 28; onClicked: prevTrack() }
                 Rectangle {
-                    width: 56; height: 56; radius: 28; color: "#ff5bb1"; opacity: 0.9
+                    width: 64; height: 64; radius: 32; color: "#ff5bb1"; opacity: 0.9
                     ButtonControl {
                         anchors.centerIn: parent
                         icon_default: (player.playbackState === MediaPlayer.PlayingState) ? "qrc:/Image/pause.png" : "qrc:/Image/play.png"
                         icon_pressed: (player.playbackState === MediaPlayer.PlayingState) ? "qrc:/Image/hold-pause.png" : "qrc:/Image/hold-play.png"
-                        iconSize: 28
+                        iconSize: 32
                         icon_released: icon_default
                         onClicked: { if (player.playbackState === MediaPlayer.PlayingState) player.pause(); else player.play(); }
                     }
                 }
-                ButtonControl { icon_default: "qrc:/Image/next.png"; icon_pressed: "qrc:/Image/hold-next.png"; icon_released: icon_default; iconSize: 26; onClicked: nextTrack() }
-                SwitchButton { id: repeatBtn; icon_off: "qrc:/Image/repeat.png"; icon_on: "qrc:/Image/repeat1_hold.png"; iconSize: 20 }
+                ButtonControl { icon_default: "qrc:/Image/next.png"; icon_pressed: "qrc:/Image/hold-next.png"; icon_released: icon_default; iconSize: 28; onClicked: nextTrack() }
+                SwitchButton { id: repeatBtn; icon_off: "qrc:/Image/repeat.png"; icon_on: "qrc:/Image/repeat1_hold.png"; iconSize: 24 }
             }
 
-            // Volume (removed)
+            // Volume
             RowLayout {
-                visible: false
-                height: 0
                 Layout.fillWidth: true
                 spacing: 8
                 Label { text: "🔊"; color: "#cccccc" }
